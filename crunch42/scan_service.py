@@ -58,7 +58,8 @@ class Scan_Client:
         while time.time() <= start_time + MAX_RETRY_TIME:
             response = requests.get(url, headers=self.headers)
             if response.ok and len(response.json().get("list", [])) > 0:
-                return response.json()["list"][0]["report"]["taskId"]
+                # return response.json()["list"][0]["report"]["taskId"] new API
+                return response.json()["list"][0]["taskId"]
             else:
                 time.sleep(RETRY_TIME)
 
