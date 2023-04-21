@@ -71,8 +71,15 @@ class Scan_Client:
         url = _get_url(f"api/v2/scanReports/{task_id}", self.platform_url)
         response = requests.get(url, headers=self.headers)
         if response.ok:
+            # return json.loads(
+            #     base64.b64decode(response.json()["file"].encode("utf-8")).decode(
+            #         "utf-8"
+            #     )
+            # )
+            #
+            # use older api
             return json.loads(
-                base64.b64decode(response.json()["file"].encode("utf-8")).decode(
+                base64.b64decode(response.json()["data"].encode("utf-8")).decode(
                     "utf-8"
                 )
             )
