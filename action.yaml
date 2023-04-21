@@ -1,0 +1,34 @@
+name: "42Crunch API Conformance Scan"
+description: "The API Conformance Scan action adds an automatic static Conformance Scan to your workflows"
+inputs:
+  api-token:
+    description: "The API token to access 42Crunch Platform. Please create free account at https://platform.42crunch.com/register and follow hese steps to configure API_TOKEN https://docs.42crunch.com/latest/content/tasks/integrate_github_actions.htm"
+    required: true
+  platform-url:
+    description: "42Crunch platform URL"
+    required: false
+    default: "https://platform.42crunch.com"
+  report-path:
+    required: true
+    description: "Path to JSON report from audit step"
+  sarif-path:
+    required: false
+    default: report.sarif
+    description: "Name of SARIF report path"
+  command: 
+    required: false
+    description: "Command sdk you want to use"
+
+
+branding:
+  icon: "eye"
+  color: "purple"
+runs:
+  using: "docker"
+  image: "Dockerfile"
+  env:
+    X42C_API_TOKEN: ${{ inputs.api-token }}
+    X42C_PLATFORM_URL: ${{ inputs.platform-url }}
+    report_path: ${{ inputs.report-path }}
+    sarif_path: ${{inputs.sarif-path}}
+    command: ${{inputs.command}}
