@@ -1,0 +1,48 @@
+
+#### QuickGen configuration file ####
+
+# Hostname of the server
+host: ""
+
+# Base path of the server, You can use * wildcard. Example: /api/account/* or /api/*.
+base_path: "/*"
+
+# Protocols supported by the server
+protocols:
+    https: true
+    http: false
+
+# Path parameters, with format /info/{param1}/age in a list
+path_parameters: []
+
+# Path exclusions, with format /info/all_users/age in a list
+path_exclusions: []
+
+
+# Security definitions (uncomment one of them if needed)
+# for optional fields, if you don't need them, just keep them empty
+
+# API key names in a list, keys can be in headers or query parameters
+#api_keys: []
+
+# OAuth2 Implicit configuration
+#OAuth_implicit_configuration:
+#    authorization_url: ""
+#    refresh_url: "" # Optional
+
+# OAuth2 Resource Owner Password Credentials configuration
+#OAuth_resource_owner_password_credentials_configuration:
+#    token_url: ""
+#    refresh_url: "" # Optional
+
+# OAuth2 Client Credentials configuration
+#OAuth_client_credentials_configuration:
+#    token_url: ""
+#    refresh_url: "" # Optional
+
+# OAuth2 Authorization Code configuration
+#OAuth_authorization_code_configuration:
+#    authorization_url: ""
+#    token_url: ""
+#    refresh_url: "" # Optional
+
