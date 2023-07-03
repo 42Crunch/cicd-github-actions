@@ -55,12 +55,16 @@ def json_report_convert_to_sarif(ctx: typer.Context, sarif_path: str,
     try:
         audited = {}
         scan_client = ScanClient(api_key, platform_url)
-        if report_path:
-            audit_report = read_audit_report(report_path)
-            audited = read_audited_ids_from_report(audit_report)
         if api_id:
             for _id in api_id:
-                audited[scan_client.get_technical_name_by_api_id(_id)] = _id
+                if re.search(r',|\n| ', _id):
+                    for _inner_id in [s.strip() for s in re.sub(r", |\n| ", ",", _id).split(",") if s.strip()]:
+                        audited[scan_client.get_technical_name_by_api_id(_inner_id)] = _inner_id
+                else:
+                    audited[scan_client.get_technical_name_by_api_id(_id)] = _id
+        elif report_path:
+            audit_report = read_audit_report(report_path)
+            audited = read_audited_ids_from_report(audit_report)
         scan_reports = {}
         for file, _id in audited.items():
             print(f"Get scan report for file '{file}' with ApiId {_id}")
@@ -103,7 +107,6 @@ def json_report_check_sqg(ctx: typer.Context, report_path: str = typer.Option(No
     api_key = ctx.obj["api_key"]
     platform_url = ctx.obj["platform_url"]
     scan_client = ScanClient(api_key, platform_url)
-    print(f"Token: {api_key}, platfotm: {platform_url}, report_path={report_path}")
     if not api_id and not report_path:
         print_error_message("Path to the report or API ID not specified. Please provide the path to the report file "
                             "or specify the API ID.")
@@ -113,11 +116,8 @@ def json_report_check_sqg(ctx: typer.Context, report_path: str = typer.Option(No
         audited = {}
         if api_id:
             for _id in api_id:
-                print(f"inside list {api_id}")
                 if re.search(r',|\n| ', _id):
-                    print(f"inside list {_id}")
                     for _inner_id in [s.strip() for s in re.sub(r", |\n| ", ",", _id).split(",") if s.strip()]:
-                        print(f"get inner id {_inner_id}")
                         audited[scan_client.get_technical_name_by_api_id(_inner_id)] = _inner_id
                 else:
                     audited[scan_client.get_technical_name_by_api_id(_id)] = _id

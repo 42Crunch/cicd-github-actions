@@ -79,9 +79,20 @@ class ScanClient:
             while time.time() <= start_time + SCAN_MAX_RETRY_TIME:
                 response = requests.get(url, headers=self.headers)
                 if response.ok and response.json().get("list", []):
-                    return response.json()["list"][0]["report"]["taskId"]
-                    # new API
-                    # return response.json()["list"][0]["taskId"]
+                    newest_task_id = None
+                    newest_start = float('-inf')
+
+                    for obj in response.json()["list"]:
+                        if 'report' in obj and 'start' in obj['report']:
+                            start_timestamp = float(obj['report']['start'])
+                            if start_timestamp > newest_start:
+                                newest_start = start_timestamp
+                                newest_task_id = obj["report"].get("taskId", None)
+
+                    if newest_task_id:
+                        return newest_task_id
+                    else:
+                        raise Exception(response.text)
                 else:
                     time.sleep(SCAN_RETRY_TIME)
             raise Exception(response.text)
@@ -91,21 +102,17 @@ class ScanClient:
 
     def read_scan_report(self, task_id: str) -> dict:
         try:
-            url = _get_url(f"api/v2/scanReports/{task_id}", self.platform_url)
-            response = requests.get(url, headers=self.headers)
+            url_v1 = _get_url(f"api/v1/scanReports/{task_id}", self.platform_url)
+            url_v2 = _get_url(f"api/v2/scanReports/{task_id}", self.platform_url)
+            response = requests.get(url_v2, headers=self.headers)
+            if "message" in response.json() and response.json()["message"] == "invalid authorization":
+                response = requests.get(url_v1, headers=self.headers)
             if response.ok:
                 return json.loads(
                     base64.b64decode(response.json()["file"].encode("utf-8")).decode(
                         "utf-8"
                     )
                 )
-
-                # use older api
-                # return json.loads(
-                #     base64.b64decode(response.json()["data"].encode("utf-8")).decode(
-                #         "utf-8"
-                #     )
-                # )
             else:
                 raise Exception(response.text)
         except Exception as e:
@@ -121,7 +128,7 @@ class ScanClient:
             else:
                 raise Exception(response.text)
         except Exception as e:
-            raise ScanError(f"Can't read scan sqg's", str(e))
+            raise ScanError("Can't read scan sqg's", str(e))
 
     def run_scan_docker(self,
                         scan_token: str, image: str = "42crunch/scand-agent:v2.0.0-rc07",
