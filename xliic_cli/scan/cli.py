@@ -45,6 +45,7 @@ def json_report_convert_to_sarif(ctx: typer.Context, sarif_path: str,
     Converting the scan report to SARIF format involves reading the audit report JSON file
     and write SARIF report file.
     """
+    api_id = [item for item in api_id if item != '']
     if not api_id and not report_path:
         print_error_message("Path to the report or API ID not specified. Please provide the path to the report file "
                             "or specify the API ID.")
@@ -104,6 +105,7 @@ def json_report_check_sqg(ctx: typer.Context, report_path: str = typer.Option(No
     By checking the SQGs against the audit report, this command can determine whether each API
     has passed or failed its security tests.
     """
+    api_id = [item for item in api_id if item != '']
     api_key = ctx.obj["api_key"]
     platform_url = ctx.obj["platform_url"]
     scan_client = ScanClient(api_key, platform_url)

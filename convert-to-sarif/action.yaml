@@ -8,13 +8,16 @@ inputs:
     description: "42Crunch platform URL"
     required: false
     default: "https://platform.42crunch.com"
-  report-path:
+  audit-report-path:
     required: true
     description: "Path to JSON report from audit step"
   sarif-path:
     required: false
     default: report.sarif
     description: "Name of SARIF report path"
+  api-ids:
+    required: false
+    description: "UUID or list UUID of API"
 
 branding:
   icon: "eye"
@@ -22,9 +25,13 @@ branding:
 runs:
   using: "docker"
   image: "../Dockerfile"
-  env:
-    X42C_API_TOKEN: ${{ inputs.api-token }}
-    X42C_PLATFORM_URL: ${{ inputs.platform-url }}
-    report_path: ${{ inputs.report-path }}
-    sarif_path: ${{inputs.sarif-path}}
-    command: 42c scan convert-to-sarif $sarif_path --report-path=$report_path
+  args:
+    - "42c"
+    - "scan"
+    - "--api-key=${{ inputs.api-token }}"
+    - "--platform-url=${{ inputs.platform-url }}"
+    - "convert-to-sarif"
+    - "${{ inputs.sarif-path}}"
+    - "--report-path=${{ inputs.audit-report-path }}"
+    - "--api-id=${{ inputs.api-ids }}"
+  
