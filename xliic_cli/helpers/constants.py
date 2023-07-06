@@ -1,8 +1,0 @@
-ASSESSMENT_MAX_WAIT = 60
-ASSESSMENT_RETRY = 5
-SCAN_MAX_RETRY_TIME = 30
-SCAN_RETRY_TIME = 1
-DEFAULT_MIN_SCORE = 75
-CONF_FILE = "42c-conf.yaml"
-CONF_FILE_ALTERNATE = "42c-conf.yml"
-UUID_REGEX = r"^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
