@@ -27,7 +27,7 @@ runs:
     - "--api-key=${{ inputs.api-token }}"
     - "--platform-url=${{ inputs.platform-url }}"
     - "check-sqg"
-    - "--report-path=${{ inputs.platform-url }}"
+    - "--report-path=${{ inputs.audit-report-path }}"
     - "--api-id=${{ inputs.api-ids }}"
     # - "a=${{ inputs.api-ids }}"
     # - ${{ replace(' ', ' ', inputs.my-input) }}
