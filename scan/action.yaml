@@ -1,0 +1,49 @@
+name: "42Crunch API Conformance Scan"
+description: "The API Conformance Scan action adds an automatic static Conformance Scan to your workflows"
+inputs:
+  api-token:
+    description: "The API token to access 42Crunch Platform. Please create free account at https://platform.42crunch.com/register and follow hese steps to configure API_TOKEN https://docs.42crunch.com/latest/content/tasks/integrate_github_actions.htm"
+    required: true
+  platform-url:
+    description: "42Crunch platform URL"
+    required: false
+    default: "https://platform.42crunch.com"
+  audit-report-path:
+    required: true
+    description: "Path to JSON report from audit step"
+  api-ids:
+    required: false
+    description: "UUID or list UUID of API"
+  convert-to-sarif:
+    required: false
+    description: "Path to save sarif report, add 'Convert to sarif' stage"
+  upload-sarif:
+    required: false
+    description: "Add 'Upload sarif' and 'Convert to sarif' stage"
+  check-sqg:
+    required: false
+    description: "Add 'Check sqg' stage"
+  github-token:
+    description: "GitHub token for uploading results to Github Code Scanning"
+    required: false
+    default: ${{ github.token }}
+
+branding:
+  icon: "eye"
+  color: "purple"
+runs:
+  using: "docker"
+  image: "../Dockerfile"
+  args:
+    - "42c"
+    - "scan"
+    - "--api-key=${{ inputs.api-token }}"
+    - "--platform-url=${{ inputs.platform-url }}"
+    - "run"
+    - "--report-path=${{ inputs.audit-report-path }}"
+    - "--api-id=${{ inputs.api-ids }}"
+    - "--convert-to-sarif=${{ inputs.convert-to-sarif }}"
+    - ${{inputs.check-sqg=='true' && '--check-sqg' || '--no-check-sqg' }}
+    - ${{inputs.upload-sarif=='true' && '--upload-sarif' || '--no-upload-sarif' }}
+  env:
+    GITHUB_TOKEN: ${{ inputs.github-token }}
