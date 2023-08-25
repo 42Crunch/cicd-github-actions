@@ -1,3 +1,4 @@
-FROM python:3.12-rc-bookworm
-COPY ./ /scanBuild/dist/*.whl /scan/
-RUN pip install scan/*.whl
+FROM python:slim-bullseye
+RUN mkdir /scan
+COPY . /scan
+RUN pip install /scan/*.whl
