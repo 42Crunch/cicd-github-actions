@@ -2,7 +2,7 @@ name: "42Crunch API Conformance Scan"
 description: "The API Conformance Scan action adds an automatic static Conformance Scan to your workflows"
 inputs:
   api-token:
-    description: "The API token to access 42Crunch Platform. Please create free account at https://platform.42crunch.com/register and follow hese steps to configure API_TOKEN https://docs.42crunch.com/latest/content/tasks/integrate_github_actions.htm"
+    description: "API token to access 42Crunch Platform. Check https://docs.42crunch.com/latest/content/tasks/integrate_github_actions.htm for details"
     required: true
   platform-url:
     description: "42Crunch platform URL"
@@ -13,7 +13,7 @@ inputs:
     description: "Path to JSON report from audit step"
   api-ids:
     required: false
-    description: "UUID or list UUID of API"
+    description: "List of API UUIDs to use"
   convert-to-sarif:
     required: false
     description: "Path to save sarif report, add 'Convert to sarif' stage"
@@ -31,11 +31,12 @@ inputs:
 branding:
   icon: "eye"
   color: "purple"
+
 runs:
   using: "docker"
   image: "../Dockerfile"
   args:
-    - "42c"
+    - "42ctl"
     - "scan"
     - "--api-key=${{ inputs.api-token }}"
     - "--platform-url=${{ inputs.platform-url }}"
