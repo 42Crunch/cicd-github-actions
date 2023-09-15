@@ -1,5 +1,5 @@
 name: "42Crunch API Conformance Scan"
-description: "The API Conformance Scan action adds an automatic static Conformance Scan to your workflows"
+description: "42Crunch API Scan action adds dynamic security testing to your APIs. This action includes report validation and SARIF support."
 inputs:
   api-token:
     description: "API token to access 42Crunch Platform. Check https://docs.42crunch.com/latest/content/tasks/integrate_github_actions.htm for details"
