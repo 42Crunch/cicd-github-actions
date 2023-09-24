@@ -83,7 +83,7 @@ steps:
           customHeaders: '{"Accept": "application/json"}'
           data: '{"token": "${{ steps.upload_v1_scan_config.outputs.SCANV1_TOKEN }}","name": "scand-${{ github.run_id }}-${{ github.run_attempt }}","platformService": "${{ env.PLATFORM_SERVICE_ENDPOINT }}","scandImage": "${{vars.SCAN_AGENT_V1}}","expirationTime": 600,"env": { "SECURITY_ACCESS_TOKEN": "${{ steps.get_pixi_token.outputs.PIXI_TOKEN }}"}}'
       - name: upload scan results
-        uses: 42crunch/cicd-github-actions/scan@master
+        uses: 42crunch/cicd-github-actions@v1
         with:
           api-token: ${{ secrets.API_TOKEN }}
           platform-url: ${{ env.PLATFORM_URL}}

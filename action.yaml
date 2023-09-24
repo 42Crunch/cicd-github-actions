@@ -34,7 +34,7 @@ branding:
 
 runs:
   using: "docker"
-  image: "../Dockerfile"
+  image: "Dockerfile"
   args:
     - "42ctl"
     - "scan"
